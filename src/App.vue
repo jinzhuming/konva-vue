@@ -35,7 +35,7 @@ const data = ref<IShape[]>([
   },
 ]);
 
-const shapes = computed(() => data.value.map((item) => ({ ...item, draggable: editMode.value })));
+const shapes = computed(() => data.value.map((item) => ({ ...item, draggable: !!editMode.value })));
 
 const onCreateNewShape = (shape: IShape) => {
   creatorType.value = undefined;

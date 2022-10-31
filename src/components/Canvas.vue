@@ -27,7 +27,7 @@ import Stage from "./Stage.vue";
 import { IShape, TCreatorType } from "./interface";
 import Creator from "./creator/RectCreator.vue";
 
-defineProps<{ shapes: IShape[]; creatorType: TCreatorType }>();
+defineProps<{ shapes: IShape[]; creatorType?: TCreatorType }>();
 const emit = defineEmits(["onCreateNewShape", "onChange"]);
 const onCreateNewShape = (shape: IShape) => {
   emit("onCreateNewShape", shape);
