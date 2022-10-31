@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup name="stage">
-import Konva from "Konva";
+import Konva from "konva";
 import { ref, watch, onMounted, getCurrentInstance, useAttrs, onUnmounted } from "vue";
 const props = defineProps<{ config: { width: number; height: number } }>();
 const instance: any = getCurrentInstance();

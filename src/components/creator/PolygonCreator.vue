@@ -5,6 +5,7 @@ import Konva from "konva";
 import { onUnmounted, getCurrentInstance } from "vue";
 import { findParentKonva } from "../utils";
 import { TCreatorType } from "../interface";
+import { v4 as uuid } from "uuid";
 const instance: any = getCurrentInstance();
 defineProps<{
   type?: TCreatorType;
@@ -13,6 +14,7 @@ const emit = defineEmits(["onCreateNewShape"]);
 
 const layer: Konva.Layer = findParentKonva(instance).__konvaNode;
 const initLine = {
+  id: uuid(),
   type: "polygon",
   stroke: "black",
   strokeWidth: 5,
