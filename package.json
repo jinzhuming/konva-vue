@@ -11,6 +11,7 @@
   "dependencies": {
     "@types/uuid": "^8.3.4",
     "konva": "^8.3.13",
+    "path": "^0.12.7",
     "prettier": "^2.7.1",
     "uuid": "^9.0.0",
     "vue": "^3.2.41"
