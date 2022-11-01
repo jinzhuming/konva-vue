@@ -27,3 +27,14 @@ export const useHelper = () => {
     },
   };
 };
+
+export const randomNum = (maxNum: number) => {
+  return parseInt(`${Math.random() * maxNum}`, 10) + 1;
+};
+
+export const randomColor = () => {
+  const r = Math.floor(Math.random() * 255);
+  const g = Math.floor(Math.random() * 255);
+  const b = Math.floor(Math.random() * 255);
+  return `rgba(${r}, ${g}, ${b}, 1)`;
+};
