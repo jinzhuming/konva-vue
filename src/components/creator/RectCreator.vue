@@ -2,14 +2,15 @@
 
 <script lang="ts" setup name="creator">
 import Konva from "konva";
-import { watch, onMounted, onUnmounted, getCurrentInstance } from "vue";
-import { findParentKonva } from "../utils";
+import { watch, onMounted, onUnmounted, getCurrentInstance, inject, Ref } from "vue";
+import { findParentKonva, useHelper } from "../utils";
 import { v4 as uuid } from "uuid";
 import { IShape, TCreatorType } from "../interface";
 const instance: any = getCurrentInstance();
 const props = defineProps<{
   type?: TCreatorType;
 }>();
+const helper = useHelper();
 const emit = defineEmits(["onCreateNewShape"]);
 
 const layer: Konva.Layer = findParentKonva(instance).__konvaNode;
@@ -26,6 +27,9 @@ onMounted(() => {
 
       if (shape) {
         layer.removeChildren();
+
+        helper.next("按下鼠标绘制图形");
+
         layer.add(shape);
       }
     },
@@ -60,6 +64,8 @@ onMounted(() => {
       y: props.type === "circle" ? y + height / 2 : y,
       height,
     });
+
+    helper.next("继续移动鼠标绘制图形... 抬起鼠标创建图形");
   };
 
   const onMouseUp = () => {
@@ -79,6 +85,7 @@ onMounted(() => {
     emit("onCreateNewShape", newShape);
     shape.destroy();
     shape = null;
+    helper.clear();
   };
 
   const onMousedown = ({ evt, ...props }: { evt: MouseEvent }) => {
@@ -94,6 +101,7 @@ onMounted(() => {
     layer.add(shape);
     stage.on("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
+    helper.next("移动鼠标绘制图形");
   };
 
   stage.on("mousedown", onMousedown);

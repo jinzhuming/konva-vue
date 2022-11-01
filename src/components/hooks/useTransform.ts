@@ -1,6 +1,6 @@
 import Konva from "konva";
 import { findParentKonva } from "../utils";
-import { computed, ComputedRef, defineEmits, getCurrentInstance, onUnmounted, watch } from "vue";
+import { computed, ComputedRef, defineEmits, getCurrentInstance, inject, onUnmounted, watch } from "vue";
 import { IShape } from "../interface";
 
 /*

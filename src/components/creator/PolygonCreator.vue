@@ -3,13 +3,15 @@
 <script lang="ts" setup name="creator">
 import Konva from "konva";
 import { onUnmounted, getCurrentInstance } from "vue";
-import { findParentKonva } from "../utils";
+import { findParentKonva, useHelper } from "../utils";
 import { TCreatorType } from "../interface";
 import { v4 as uuid } from "uuid";
 const instance: any = getCurrentInstance();
 defineProps<{
   type?: TCreatorType;
 }>();
+const helper = useHelper();
+helper.next("点击鼠标左键绘制第一个点");
 const emit = defineEmits(["onCreateNewShape"]);
 
 const layer: Konva.Layer = findParentKonva(instance).__konvaNode;
@@ -73,6 +75,7 @@ const onMousedown = ({ evt }: { evt: MouseEvent }) => {
     stage.off("mousemove", onMouseMove);
     auxiliaryLine.destroy();
     shape.destroy();
+    helper.clear();
     return;
   }
 
@@ -84,8 +87,10 @@ const onMousedown = ({ evt }: { evt: MouseEvent }) => {
     layer.add(auxiliaryLine);
     layer.add(shape);
   }
+
   // 开启辅助线移动监听
   stage.on("mousemove", onMouseMove);
+  helper.next("移动并继续点击鼠标左键绘制下一个点... 单击起始点位闭合图形");
 };
 
 stage.on("mousedown", onMousedown);

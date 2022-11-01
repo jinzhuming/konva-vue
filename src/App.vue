@@ -10,7 +10,6 @@
   <button @click="creatorType = 'rect'">画矩形</button>
   <button @click="creatorType = 'polygon'">画多边形</button>
   <button @click="setEditMode">{{ editMode ? "关闭" : "开启" }}编辑模式</button>
-  <div style="position: fixed; right: 10px; bottom: 20px; color: rgba(0, 0, 0, 0.4)">12</div>
 </template>
 
 <script setup lang="ts">

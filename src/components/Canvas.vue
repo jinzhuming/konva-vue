@@ -14,6 +14,7 @@
         <Creator v-else @onCreateNewShape="onCreateNewShape" :type="creatorType" />
       </Layer>
     </Stage>
+    <Helper />
   </div>
 </template>
 
@@ -26,6 +27,11 @@ import Layer from "./Layer.vue";
 import Stage from "./Stage.vue";
 import { ICanvasConfig, IShape, TCreatorType } from "./interface";
 import Creator from "./creator/RectCreator.vue";
+import { provide, Ref, ref } from "vue";
+import Helper from "./Helper.vue";
+
+const helperContent = ref("");
+provide<Ref<string>>("helper", helperContent);
 
 defineProps<{ shapes: IShape[]; creatorType?: TCreatorType; canvasConfig: ICanvasConfig }>();
 const emit = defineEmits(["onCreateNewShape", "onChange"]);
