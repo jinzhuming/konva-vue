@@ -47,12 +47,10 @@ const onMouseMove = ({ evt }: { evt: MouseEvent }) => {
   if (!lastPathX || !lastPathY) return;
 
   //做个吸附效果，如果鼠标当前位置非常接近闭合点，把线移动过去
-  console.log(lastPathX, x);
   if (Math.abs(closePathX - x) <= 5 && Math.abs(closePathY - y) <= 5) {
     auxiliaryLine.setAttrs({
       points: [lastPathX, lastPathY, closePathX, closePathY],
     });
-    console.log(1);
   } else {
     //  辅助线的第一个点永远是 path 的最后一个位置，第二个点是当前鼠标所在的点
     auxiliaryLine.setAttrs({

@@ -1,3 +1,6 @@
+import { ComponentInternalInstance } from "vue";
+import Konva from "konva";
+
 export type TCreatorType = "circle" | "rect" | "polygon";
 export interface IShape {
   type: TCreatorType;
@@ -12,4 +15,8 @@ export interface IShape {
   stroke?: string;
   strokeWidth?: number;
   closed?: boolean;
+}
+
+export interface IInstance extends ComponentInternalInstance {
+  __konvaNode: Konva.Node;
 }

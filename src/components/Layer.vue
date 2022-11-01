@@ -6,7 +6,8 @@
 import Konva from "konva";
 import { watch, onMounted, onUnmounted, getCurrentInstance, useAttrs } from "vue";
 import { findParentKonva } from "./utils";
-const attrs = useAttrs();
+import { syncAttrs } from "./hooks/syncAttrs";
+
 const instance: any = getCurrentInstance();
 
 const konvaNode = new Konva.Layer();
@@ -20,11 +21,5 @@ onUnmounted(() => {
   konvaNode.destroy();
 });
 
-watch(
-  () => attrs,
-  () => {
-    konvaNode.setAttrs(attrs);
-  },
-  { deep: true },
-);
+syncAttrs(konvaNode);
 </script>

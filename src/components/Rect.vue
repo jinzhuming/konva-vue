@@ -2,57 +2,32 @@
 
 <script lang="ts" setup name="rect">
 import Konva from "konva";
-import { watch, onMounted, onUnmounted, getCurrentInstance, useAttrs } from "vue";
+import { onUnmounted, getCurrentInstance, defineEmits } from "vue";
 import { findParentKonva } from "./utils";
 import { IShape } from "./interface";
-const attrs = useAttrs();
-const emit = defineEmits(["onChange"]);
+import { useTransform } from "./hooks/useTransform";
+import { syncConfig } from "./hooks/syncConfig";
+import { syncAttrs } from "./hooks/syncAttrs";
+
 const instance: any = getCurrentInstance();
-const props = defineProps<{
+
+defineProps<{
   config: IShape;
 }>();
+defineEmits(["onChange"]);
 
-const konvaNode = new Konva.Rect(props.config);
+const konvaNode = new Konva.Rect();
 instance.__konvaNode = konvaNode;
-
-const tr = new Konva.Transformer();
 
 const parentKonvaNode: Konva.Layer = findParentKonva(instance).__konvaNode;
 
 parentKonvaNode?.add(konvaNode);
-parentKonvaNode?.add(tr);
 
-const onDragend = () => {
-  emit("onChange", { ...props.config, ...konvaNode.getAttrs() });
-};
-konvaNode.on("transformend", onDragend);
-konvaNode.on("dragend", onDragend);
+useTransform(konvaNode);
+syncConfig(konvaNode);
+syncAttrs(konvaNode);
 
 onUnmounted(() => {
-  konvaNode.off("transformend", onDragend);
-  konvaNode.off("dragend", onDragend);
-  tr.destroy();
   konvaNode.destroy();
 });
-
-watch(
-  () => props.config,
-  () => {
-    konvaNode.setAttrs(props.config);
-    // 拖拽模式支持缩放
-    if (props.config.draggable) {
-      tr.nodes([konvaNode]);
-    } else {
-      tr.nodes([]);
-    }
-  },
-  { deep: true, immediate: true },
-);
-watch(
-  () => attrs,
-  () => {
-    konvaNode.setAttrs(attrs);
-  },
-  { deep: true },
-);
 </script>

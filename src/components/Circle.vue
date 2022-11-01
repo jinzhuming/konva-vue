@@ -2,60 +2,30 @@
 
 <script lang="ts" setup name="circle">
 import Konva from "konva";
-import { watch, onUnmounted, getCurrentInstance, useAttrs } from "vue";
+import { onUnmounted, getCurrentInstance, defineEmits } from "vue";
 import { findParentKonva } from "./utils";
+import { syncAttrs } from "./hooks/syncAttrs";
+import { syncConfig } from "./hooks/syncConfig";
+import { useTransform } from "./hooks/useTransform";
 import { IShape } from "./interface";
-const emit = defineEmits(["onChange"]);
-const attrs = useAttrs();
-const instance: any = getCurrentInstance();
-const props = defineProps<{
+
+defineEmits(["onChange"]);
+defineProps<{
   config: IShape;
 }>();
-
-const konvaNode = new Konva.Circle(props.config);
+const instance: any = getCurrentInstance();
+const konvaNode = new Konva.Circle();
 instance.__konvaNode = konvaNode;
 
-const tr = new Konva.Transformer();
+const layer: Konva.Layer = findParentKonva(instance).__konvaNode;
 
-const parentKonvaNode: Konva.Layer = findParentKonva(instance).__konvaNode;
+layer?.add(konvaNode);
 
-parentKonvaNode?.add(konvaNode);
-parentKonvaNode?.add(tr);
-
-const onDragend = () => {
-  emit("onChange", { ...props.config, ...konvaNode.getAttrs() });
-};
-
-konvaNode.on("dragend", onDragend);
-konvaNode.on("transformend", onDragend);
+useTransform(konvaNode);
+syncConfig(konvaNode);
+syncAttrs(konvaNode);
 
 onUnmounted(() => {
-  //销毁
-  konvaNode.off("transformend", onDragend);
-  konvaNode.off("dragend", onDragend);
   konvaNode.destroy();
-  tr.destroy();
 });
-
-watch(
-  () => props.config,
-  () => {
-    konvaNode.setAttrs(props.config);
-    // 拖拽模式支持缩放
-    if (props.config.draggable) {
-      tr.nodes([konvaNode]);
-    } else {
-      tr.nodes([]);
-    }
-  },
-  { deep: true, immediate: true },
-);
-
-watch(
-  () => attrs,
-  () => {
-    konvaNode.setAttrs(attrs);
-  },
-  { deep: true },
-);
 </script>
