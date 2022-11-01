@@ -1,6 +1,6 @@
 <template>
   <div class="canvas" style="background: rgba(0, 0, 0, 0.1)">
-    <Stage backgroundColor="red" :config="{ width: 400, height: 400 }">
+    <Stage backgroundColor="red" :config="canvasConfig">
       <Layer>
         <template v-for="shape in shapes">
           <Circle @onChange="onChange" v-if="shape.type === 'circle'" :config="shape" :key="shape.id" />
@@ -24,10 +24,10 @@ import Rect from "./Rect.vue";
 import Circle from "./Circle.vue";
 import Layer from "./Layer.vue";
 import Stage from "./Stage.vue";
-import { IShape, TCreatorType } from "./interface";
+import { ICanvasConfig, IShape, TCreatorType } from "./interface";
 import Creator from "./creator/RectCreator.vue";
 
-defineProps<{ shapes: IShape[]; creatorType?: TCreatorType }>();
+defineProps<{ shapes: IShape[]; creatorType?: TCreatorType; canvasConfig: ICanvasConfig }>();
 const emit = defineEmits(["onCreateNewShape", "onChange"]);
 const onCreateNewShape = (shape: IShape) => {
   emit("onCreateNewShape", shape);

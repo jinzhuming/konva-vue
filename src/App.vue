@@ -1,5 +1,11 @@
 <template>
-  <Canvas :shapes="shapes" @onChange="onChange" :creatorType="creatorType" @onCreateNewShape="onCreateNewShape" />
+  <Canvas
+    :canvasConfig="{ width: 900, height: 600 }"
+    :shapes="shapes"
+    @onChange="onChange"
+    :creatorType="creatorType"
+    @onCreateNewShape="onCreateNewShape"
+  />
   <button @click="creatorType = 'circle'">画圆形</button>
   <button @click="creatorType = 'rect'">画矩形</button>
   <button @click="creatorType = 'polygon'">画多边形</button>

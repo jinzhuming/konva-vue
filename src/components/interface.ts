@@ -20,3 +20,8 @@ export interface IShape {
 export interface IInstance extends ComponentInternalInstance {
   __konvaNode: Konva.Node;
 }
+
+export interface ICanvasConfig {
+  width: number;
+  height: number;
+}
